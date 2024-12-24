@@ -9,8 +9,8 @@ function App() {
   const fetchTemperature = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://192.168.87.200/temperature"); // Replace <ESP32-IP> with the actual IP of your ESP32
-      // const response = await fetch("http://192.168.87.200/temperature");
+      const response = await fetch("http://localhost:5000/temperature"); // Replace <ESP32-IP> with the actual IP of your ESP32
+      // const response = await fetch("https://7711-103-121-70-42.ngrok-free.app/temperature");
 if (response.ok) {
   const data = await response.json();
   console.log(data); // This should log the temperature data
