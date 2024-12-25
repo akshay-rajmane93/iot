@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     // Fetch temperature data every 2 seconds
-    const intervalId = setInterval(fetchTemperature, 2000);
+    const intervalId = setInterval(fetchTemperature, 3000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
