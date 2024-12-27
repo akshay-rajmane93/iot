@@ -9,30 +9,33 @@ function App() {
   // Function to fetch temperature data from the backend
   const fetchTemperature = async () => {
     try {
-      setLoading(true);
       setServerError(false); // Reset server error before each request
       const response = await fetch(process.env.REACT_APP_API_URL);
 
-      console.log(response,'resss')
       if (response.ok) {
         const data = await response.json();
-        console.log(data); // This should log the temperature data
+        console.log(data); // Log temperature data for debugging
         setTemperature(data.temperature);
-        setLoading(false);
+        setLoading(false); // Stop loading after successful fetch
       } else {
         console.error("Failed to fetch temperature");
         setServerError(true);
+        setTemperature(null); // Reset temperature if fetch fails
         setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching temperature data:", error);
       setServerError(true);
+      setTemperature(null); // Reset temperature on error
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // Fetch temperature data every 2 seconds
+    // Fetch temperature data immediately on mount
+    fetchTemperature();
+
+    // Fetch temperature data every 4 seconds
     const intervalId = setInterval(fetchTemperature, 4000);
 
     // Cleanup interval on component unmount
@@ -46,7 +49,6 @@ function App() {
     } else if (temperature < 10) {
       return "❄️"; // Snowflake emoji for low temperature
     } else {
-      console.log(typeof(temperature),'typee')
       return "💨"; // Airflow emoji for normal temperature
     }
   };
@@ -58,13 +60,15 @@ function App() {
         <p className="error-message">Unable to fetch data. Server might be down.</p>
       ) : loading ? (
         <p>Loading...</p>
-      ) : (
+      ) : temperature !== null ? (
         <div className="temperature-display">
-          <div className="temperature-info">
-            <p className="temperature">Temperature: {parseFloat(temperature).toFixed(2)} °C</p>
-            <div className="condition-emoji">{getConditionEmoji()}</div>
-          </div>
+          <p className="temperature">
+            Temperature: {parseFloat(temperature).toFixed(2)} °C
+          </p>
+          <div className="condition-emoji">{getConditionEmoji()}</div>
         </div>
+      ) : (
+        <p>No temperature data available.</p>
       )}
     </div>
   );
