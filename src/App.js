@@ -13,7 +13,7 @@ function App() {
       setServerError(false); // Reset server error before each request
       const response = await fetch(process.env.REACT_APP_API_URL);
 
-
+      console.log(response,'resss')
       if (response.ok) {
         const data = await response.json();
         console.log(data); // This should log the temperature data
@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     // Fetch temperature data every 2 seconds
-    const intervalId = setInterval(fetchTemperature, 3000);
+    const intervalId = setInterval(fetchTemperature, 4000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
@@ -60,7 +60,7 @@ function App() {
       ) : (
         <div className="temperature-display">
           <div className="temperature-info">
-            <p className="temperature">Temperature: {temperature} °C</p>
+          <p className="temperature">Temperature: {temperature?.toFixed(2)} °C</p>
             <div className="condition-emoji">{getConditionEmoji()}</div>
           </div>
         </div>
