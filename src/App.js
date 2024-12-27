@@ -12,15 +12,20 @@ function App() {
       setLoading(true);
       setServerError(false); // Reset server error before each request
       const response = await fetch(process.env.REACT_APP_API_URL);
+
+      console.log(response,'resss')
       if (response.ok) {
         const data = await response.json();
+        console.log(data); // This should log the temperature data
         setTemperature(data.temperature);
         setLoading(false);
       } else {
+        console.error("Failed to fetch temperature");
         setServerError(true);
         setLoading(false);
       }
     } catch (error) {
+      console.error("Error fetching temperature data:", error);
       setServerError(true);
       setLoading(false);
     }
@@ -41,6 +46,7 @@ function App() {
     } else if (temperature < 10) {
       return "❄️"; // Snowflake emoji for low temperature
     } else {
+      console.log(typeof(temperature),'typee')
       return "💨"; // Airflow emoji for normal temperature
     }
   };
@@ -55,7 +61,7 @@ function App() {
       ) : (
         <div className="temperature-display">
           <div className="temperature-info">
-            <p className="temperature"> Temperature: {temperature !== null && temperature !== undefined ? `${temperature.toFixed(2)} °C` : "No data"}</p>
+            <p className="temperature">Temperature: {parseFloat(temperature).toFixed(2)} °C</p>
             <div className="condition-emoji">{getConditionEmoji()}</div>
           </div>
         </div>
